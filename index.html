@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validación de Cédula</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f7f9fc;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            align-items: center;
+            color: #333;
+        }
+        header {
+            text-align: center;
+            padding: 100px 0;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2em;
+            font-weight: 700;
+            color: #002147;
+        }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 300px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 100%;
+            border: 1px solid #007bff;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            margin-bottom: 20px;
+            text-align: center; /* Centrando el texto dentro del input */
+        }
+        input[type="text"]:focus {
+            border-color: #0056b3;
+            outline: none;
+        }
+        button {
+            padding: 8px 16px;
+            background-color: #002147;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #resultado {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            width: 100%;
+            max-width: 300px;
+        }
+        footer {
+            text-align: center;
+            padding: 5px 20px;
+            background-color: #002147;
+            color: white;
+            font-size: 1em;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Validación de Cédula</h1>
+    </header>
+
+    <div class="input-group">
+        <input type="text" id="cedula" placeholder="Ingresa tu cédula sin guiones" maxlength="11">
+        <button onclick="validarCedula()">Validar</button>
+        <div id="resultado"></div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Validación de Cédula. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        function validarCedula() {
+            const cedula = document.getElementById("cedula").value.replace(/-/g, '').trim();
+            const resultado = document.getElementById("resultado");
+
+            if (cedula.length !== 11) {
+                resultado.textContent = "La cédula debe tener 11 dígitos.";
+                resultado.style.color = "red";
+                return;
+            }
+
+            let suma = 0;
+            for (let i = 0; i < 10; i++) {
+                const digito = parseInt(cedula[i], 10) * (i % 2 === 0 ? 1 : 2);
+                suma += digito > 9 ? Math.floor(digito / 10) + (digito % 10) : digito;
+            }
+
+            const ultimoDigito = parseInt(cedula[10], 10);
+            const verificador = (10 - (suma % 10)) % 10;
+
+            resultado.textContent = verificador === ultimoDigito ? "Cédula válida." : "Cédula inválida.";
+            resultado.style.color = verificador === ultimoDigito ? "#28a745" : "red";
+        }
+    </script>
+
+</body>
+</html>
